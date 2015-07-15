@@ -1,0 +1,36 @@
+{
+  "name": "overview-js-token-bin",
+  "version": "0.0.1",
+  "description": "Data structure to create, combine and count Arrays of String tokens",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/overview/overview-js-token-bin.git"
+  },
+  "keywords": [
+    "data",
+    "structure",
+    "set",
+    "add",
+    "remove",
+    "word",
+    "token",
+    "nlp",
+    "text",
+    "analysis",
+    "array",
+    "string"
+  ],
+  "author": "Adam Hooper <adam@adamhooper.com>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/overview/overview-js-token-bin/issues"
+  },
+  "homepage": "https://github.com/overview/overview-js-token-bin",
+  "devDependencies": {
+    "chai": "^3.0.0"
+  }
+}
