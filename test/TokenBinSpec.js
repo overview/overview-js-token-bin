@@ -26,6 +26,12 @@ describe('TokenBin', function() {
     expect(arr).to.deep.eq([ 'token', 'beep', 'token' ]);
   });
 
+  it('should set nDocuments=1 and nTokens', function() {
+    var bin = new TokenBin([ 'a', 'b', 'a' ]);
+    expect(bin.nDocuments).to.eq(1);
+    expect(bin.nTokens).to.eq(3);
+  });
+
   describe('concat', function() {
     it('should not modify either input', function() {
       var bin1 = new TokenBin([ 'beep', 'token', 'beep' ]);
@@ -35,6 +41,20 @@ describe('TokenBin', function() {
         .to.deep.eq([ 2, 1 ]);
       expect(bin2.getTokens().map(function(t) { return t.frequency; }))
         .to.deep.eq([ 1, 1, 1 ]);
+    });
+
+    it('should set nDocuments', function() {
+      var bin = new TokenBin([ 'a', 'b' ])
+        .concat(new TokenBin([ 'a', 'b' ]))
+        .concat(new TokenBin([ 'a', 'b' ])); // So we get a 2+1, not just 1+1
+      expect(bin.nDocuments).to.eq(3);
+    });
+
+    it('should set nTokens', function() {
+      var bin = new TokenBin([ 'a', 'b' ])
+        .concat(new TokenBin([ 'a', 'b' ]))
+        .concat(new TokenBin([ 'a', 'b' ])); // So we get a 4+2, not just 2+2
+      expect(bin.nTokens).to.eq(6);
     });
 
     it('should merge names, frequencies and nDocuments', function() {

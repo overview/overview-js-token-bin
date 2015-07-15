@@ -39,6 +39,9 @@ var totalBin = documents.reduce(function(aggBin, bin) {
   return aggBin.concat(bin);
 }, new TokenBin([]));
 
+console.log(totalBin.nDocuments); // 4
+console.log(totalBin.nTokens); // 13, the total number of tokens
+
 // Each token returned is an Object with "name", "frequency" and "nDocuments"
 
 console.log(totalBin.getTokens()); // [ <Array,4,4>, <beep,3,2>, <of,1,1>, <tokens,5,3> ]
