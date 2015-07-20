@@ -1,6 +1,6 @@
 {
   "name": "overview-js-token-bin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Data structure to create, combine and count Arrays of String tokens",
   "main": "index.js",
   "scripts": {

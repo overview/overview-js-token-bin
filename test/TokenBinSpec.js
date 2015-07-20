@@ -6,13 +6,13 @@ describe('TokenBin', function() {
   it('should make tokens unique', function() {
     var bin = new TokenBin([ 'token', 'beep', 'beep' ]);
     expect(bin.getTokens().map(function(t) { return t.name; }))
-      .to.deep.eq([ 'beep', 'token' ]);
+      .to.deep.eq([ 'token', 'beep' ]);
   });
 
   it('should count frequencies', function() {
     var bin = new TokenBin([ 'token', 'beep', 'beep' ]);
     expect(bin.getTokens().map(function(t) { return t.frequency; }))
-      .to.deep.eq([ 2, 1 ]);
+      .to.deep.eq([ 1, 2 ]);
   });
 
   it('should work for empty input', function() {
@@ -60,6 +60,34 @@ describe('TokenBin', function() {
     it('should merge names, frequencies and nDocuments', function() {
       var bin = new TokenBin([ 'a', 'b', 'b', 'c' ])
         .concat(new TokenBin([ 'b', 'c', 'd', 'd' ]));
+      var tokens = bin.getTokens();
+
+      expect(tokens.map(function(t) { return t.name; }))
+        .to.deep.eq([ 'a', 'b', 'c', 'd' ]);
+      expect(tokens.map(function(t) { return t.frequency; }))
+        .to.deep.eq([ 1, 3, 2, 2 ]);
+      expect(tokens.map(function(t) { return t.nDocuments; }))
+        .to.deep.eq([ 1, 2, 2, 1 ]);
+    });
+  });
+
+  describe('addTokens', function() {
+    it('should set nDocuments', function() {
+      var bin = new TokenBin([ 'a', 'b' ]).concat(new TokenBin([ 'a', 'b' ]));
+      bin.addTokens([ 'a', 'b' ]);
+      expect(bin.nDocuments).to.eq(3);
+    });
+
+    it('should set nTokens', function() {
+      var bin = new TokenBin([ 'a', 'b' ]).concat(new TokenBin([ 'a', 'b' ]));
+      bin.addTokens([ 'a', 'b' ]);
+      expect(bin.nTokens).to.eq(6);
+    });
+
+    it('should merge names, frequencies and nDocuments', function() {
+      var bin = new TokenBin([ 'a', 'b', 'b', 'c' ]);
+      bin.addTokens([ 'b', 'c', 'd', 'd' ]);
+
       var tokens = bin.getTokens();
 
       expect(tokens.map(function(t) { return t.name; }))

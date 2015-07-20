@@ -60,3 +60,13 @@ totalBin = documents.reduce(function(agg, tokenStream) {
 }, new TokenBin([]));
 
 console.log('Created and concatenated %d bins in %dms. %d tokens.', documents.length, new Date() - t1, totalBin._tokens.length);
+
+console.log('Now, doing the same with a mutable variable...');
+
+t1 = new Date();
+totalBin = new TokenBin([]);
+documents.forEach(function(tokenStream) {
+  totalBin.addTokens(tokenStream);
+});
+
+console.log('Analyzed %d documents in %dms. %d tokens.', documents.length, new Date() - t1, totalBin._tokens.length);
