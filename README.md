@@ -76,14 +76,15 @@ The mutable way is around three times faster (with Node 0.12.6). The downside:
 if you call `var x = bin.getTokensByNDocuments(); bin.addTokens(...);`, the
 `addTokens()` will change the values in `x`.
 
-Memory
-------
+Performance: small and fast
+---------------------------
 
 This library is designed to handle 100k unique tokens (average length 6 bytes)
 in ~2MB of RAM, with most operations being O(1) and the rest taking <100ms on a
-midrange 2015 computer. It should easily scale to 10M documents.
+midrange 2015 computer. It should easily scale to 10M documents at zero extra
+memory cost.
 
-A "Token" looks like this:
+A "Token" takes around 20 bytes in memory, plus overhead. It looks like this:
 
 ```json
 {
@@ -93,19 +94,26 @@ A "Token" looks like this:
 }
 ```
 
-A token bin is an `Array` of `Token` objects.
+A token bin is an `Array` of `Token` objects, with an accompanying `Object` that
+speeds up addition operations.
 
 Test for yourself: a sort of 100k such objects will take <100ms on our target
 computers. Sorting is by far the slowest operation. So we can predict some
 running times:
 
 * *Create a token bin*: Builds an Array and an Object. O(n).
-* *Concatente two token bins*: Adds to the Array and Object. O(n).
+* *Add tokens to a token bin*: Adds to the Array and Object. O(n).
+* *Concatenate two token bins*: Copies and adds. O(n).
 * *Find top tokens*: copies the internal Array and sorts it. O(n lg n), 100ms.
 
 Sounds easy, right? Well, it took a lot of thought and experimentation. And
-it's certainly particular to JavaScript, which has lightning-fast Arrays and
-very-slow everything else.
+it's particular to JavaScript, which has lightning-fast Arrays and very-slow
+everything else.
+
+To stay small, this library will "unleak" Strings. We assume the incoming
+tokens are small substrings of large-String documents, so any one substring
+holds a reference to the entire document. We rebuild Strings to be smaller,
+using the workaround from https://code.google.com/p/v8/issues/detail?id=2869
 
 Developing
 ----------
